@@ -1,6 +1,7 @@
 #include "semantic.h"
 #include <iostream>
 #include "ast.h"
+
 using namespace std;
 int Interpreter::evaluate(Expr *expr) {
     if (auto num = dynamic_cast<NumberExpr *>(expr)) {
@@ -21,13 +22,3 @@ int Interpreter::evaluate(Expr *expr) {
     return 0;
 }
 
-void Interpreter::execute(const std::vector<std::unique_ptr<Stmt>> &program) {
-    for (const auto &stmt : program) {
-        if (auto letStmt = dynamic_cast<LetStmt *>(stmt.get())) {
-            int val = evaluate(letStmt->expr.get());
-            variables[letStmt->name] = val;
-        } else if (auto printStmt = dynamic_cast<PrintStmt *>(stmt.get())) {
-            cout << evaluate(printStmt->expr.get()) << "\n";
-        }
-    }
-}
