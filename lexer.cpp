@@ -43,7 +43,7 @@ vector<Token> Lexer::tokenize() {
                 case '+': tokens.push_back({TokenType::PLUS, "+"}); break;
                 case ';': tokens.push_back({TokenType::SEMICOLON, ";"}); break;
                 case '-': tokens.push_back({TokenType::MINUS, "-"}); break;
-                case '*': tokens.push_back({TokenType::STAR, "*"}); break;
+                case '': tokens.push_back({TokenType::STAR, ""}); break;
                 case '(': tokens.push_back({TokenType::LPAREN, "("}); break;    // Add this
                 case ')': tokens.push_back({TokenType::RPAREN, ")"}); break; 
                 case '/': tokens.push_back({TokenType::SLASH, "/"}); break;
@@ -55,3 +55,4 @@ vector<Token> Lexer::tokenize() {
     tokens.push_back({TokenType::END, ""});
     return tokens;
 }
+]
