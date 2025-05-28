@@ -1,13 +1,22 @@
 #include "interpreter.h"
 #include <iostream>
-
+#include "ast.h"
+using namespace std;
 int Interpreter::evaluate(Expr *expr) {
     if (auto num = dynamic_cast<NumberExpr *>(expr)) {
         return num->value;
     } else if (auto var = dynamic_cast<VarExpr *>(expr)) {
         return variables[var->name];
     } else if (auto bin = dynamic_cast<BinaryExpr *>(expr)) {
-        return evaluate(bin->left.get()) + evaluate(bin->right.get());
+        int l = evaluate(bin->left.get());
+        int r = evaluate(bin->right.get());
+        switch (bin->op) {
+            case TokenType::PLUS: return l + r;
+            case TokenType::MINUS: return l - r;
+            case TokenType::STAR: return l * r;
+            case TokenType::SLASH: return l / r; 
+            default: return 0;
+        }
     }
     return 0;
 }
@@ -18,7 +27,7 @@ void Interpreter::execute(const std::vector<std::unique_ptr<Stmt>> &program) {
             int val = evaluate(letStmt->expr.get());
             variables[letStmt->name] = val;
         } else if (auto printStmt = dynamic_cast<PrintStmt *>(stmt.get())) {
-            std::cout << evaluate(printStmt->expr.get()) << "\n";
+            cout << evaluate(printStmt->expr.get()) << "\n";
         }
     }
 }

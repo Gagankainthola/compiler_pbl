@@ -13,6 +13,10 @@ int main() {
     Lexer lexer(buffer.str());
     auto tokens = lexer.tokenize();
 
+    for (const auto& token : tokens) {
+        std::cout << "Token: " << static_cast<int>(token.type) << ", value: " << token.value << "\n";
+    }
+
     Parser parser(tokens);
     auto program = parser.parse();
 

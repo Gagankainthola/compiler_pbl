@@ -1,6 +1,6 @@
 #include "lexer.h"
 #include <cctype>
-
+using namespace std;
 Lexer::Lexer(const std::string &input) : input(input) {}
 
 char Lexer::peek() {
@@ -16,21 +16,22 @@ void Lexer::skipWhitespace() {
 }
 
 Token Lexer::identifier() {
-    std::string result;
+    string result;
     while (isalnum(peek())) result += advance();
     if (result == "let") return {TokenType::LET, result};
     if (result == "print") return {TokenType::PRINT, result};
+    if (result == "while") return {TokenType::WHILE, result};
     return {TokenType::IDENTIFIER, result};
 }
 
 Token Lexer::number() {
-    std::string result;
+    string result;
     while (isdigit(peek())) result += advance();
     return {TokenType::NUMBER, result};
 }
 
-std::vector<Token> Lexer::tokenize() {
-    std::vector<Token> tokens;
+vector<Token> Lexer::tokenize() {
+    vector<Token> tokens;
     while (peek() != '\0') {
         skipWhitespace();
         char current = peek();
@@ -41,6 +42,13 @@ std::vector<Token> Lexer::tokenize() {
                 case '=': tokens.push_back({TokenType::ASSIGN, "="}); break;
                 case '+': tokens.push_back({TokenType::PLUS, "+"}); break;
                 case ';': tokens.push_back({TokenType::SEMICOLON, ";"}); break;
+                case '-': tokens.push_back({TokenType::MINUS, "-"}); break;
+                case '*': tokens.push_back({TokenType::STAR, "*"}); break;
+                case '(': tokens.push_back({TokenType::LPAREN, "("}); break;    // Add this
+                case ')': tokens.push_back({TokenType::RPAREN, ")"}); break; 
+                case '/': tokens.push_back({TokenType::SLASH, "/"}); break;
+                 case '<':tokens.push_back({TokenType::LESS, "<"});break;
+                   case '>': tokens.push_back({TokenType::GREATER, ">"}); break;
             }
         }
     }

@@ -3,21 +3,31 @@
 #include "ast.h"
 #include <vector>
 #include <memory>
+#include <string>  
+using namespace std;
 
 class Parser {
 public:
     explicit Parser(const std::vector<Token> &tokens);
-    std::vector<std::unique_ptr<Stmt>> parse();
+    vector<std::unique_ptr<Stmt>> parse();
+    unique_ptr<Expr> addition();
+    unique_ptr<Expr> multiplication();
+    unique_ptr<Stmt> whileStatement();
+
+    unique_ptr<Expr> equality();   
+    unique_ptr<Expr> comparison(); 
 
 private:
-    std::vector<Token> tokens;
+    vector<Token> tokens;
     size_t pos = 0;
 
     const Token &peek();
     const Token &advance();
     bool match(TokenType type);
 
-    std::unique_ptr<Stmt> statement();
-    std::unique_ptr<Expr> expression();
-    std::unique_ptr<Expr> primary();
+    const Token &consume(TokenType type, const std::string &errorMessage);  // <-- added
+
+    unique_ptr<Stmt> statement();
+    unique_ptr<Expr> expression();
+    unique_ptr<Expr> primary();
 };

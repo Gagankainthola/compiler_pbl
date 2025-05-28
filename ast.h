@@ -2,7 +2,8 @@
 #include <string>
 #include <memory>
 #include <vector>
-
+#include "token.h"
+using namespace std;
 struct Expr {
     virtual ~Expr() = default;
 };
@@ -19,22 +20,33 @@ struct VarExpr : Expr {
 
 struct BinaryExpr : Expr {
     std::unique_ptr<Expr> left, right;
-    explicit BinaryExpr(std::unique_ptr<Expr> l, std::unique_ptr<Expr> r)
-        : left(std::move(l)), right(std::move(r)) {}
+    TokenType op;
+    BinaryExpr(std::unique_ptr<Expr> l, std::unique_ptr<Expr> r, TokenType o)
+        : left(std::move(l)), right(std::move(r)), op(o) {}
 };
+
 
 struct Stmt {
     virtual ~Stmt() = default;
 };
 
 struct LetStmt : Stmt {
-    std::string name;
-    std::unique_ptr<Expr> expr;
+    string name;
+    unique_ptr<Expr> expr;
     LetStmt(const std::string &n, std::unique_ptr<Expr> e)
         : name(n), expr(std::move(e)) {}
 };
 
 struct PrintStmt : Stmt {
-    std::unique_ptr<Expr> expr;
+    unique_ptr<Expr> expr;
     explicit PrintStmt(std::unique_ptr<Expr> e) : expr(std::move(e)) {}
+};
+
+class WhileStmt : public Stmt {
+public:
+    unique_ptr<Expr> condition;
+    unique_ptr<Stmt> body;
+
+    WhileStmt(std::unique_ptr<Expr> cond, std::unique_ptr<Stmt> bodyStmt)
+        : condition(std::move(cond)), body(std::move(bodyStmt)) {}
 };

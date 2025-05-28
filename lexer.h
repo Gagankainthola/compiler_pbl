@@ -2,14 +2,14 @@
 #include "token.h"
 #include <vector>
 #include <string>
-
+using namespace std;
 class Lexer {
 public:
     explicit Lexer(const std::string &input);
-    std::vector<Token> tokenize();
+    vector<Token> tokenize();
 
 private:
-    std::string input;
+    string input;
     size_t pos = 0;
 
     char peek();
